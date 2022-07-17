@@ -3,29 +3,39 @@
 ## Getting Started
 
 ### Running Postgres
-- Install docker (`brew install docker`)
-- Install docker-compose (`brew install docker-compose`)
-- Download / install / run docker desktop
-	- https://hub.docker.com/
+- Install docker
+  - `brew install docker`
+- Install docker-compose
+  - `brew install docker-compose`
+- Download / install / run Docker Desktop
+	- Find it here: https://hub.docker.com/
+  - Install and start the app
   - Alternatively, you could run docker from the command line
 - There is a super simple example docker compose file in this repo for demo purposes that includes a Postgres image
-- Run docker: `docker-compose up -d`
+- Spin up containers with Postgres image
+  - `docker-compose up -d`
 
 ### Running TS/Prisma
-- `npm install`
 
+- Install deps
+  - `npm install`
+- Apply existing migrations
+  - `npx prisma migrate deploy`
+
+After making any changes to `prisma/schema.prisma`
+- Run `npx prisma migrate dev --name migration_name`
+  - This will create a sql migration based on your changes to the schema
+  - Using `dev` will both create and apply the migration
+  - You will have a new migration file like: `prisma/migrations/20220716041752_migration_name/migration.sql`
 
 ## Running Basic Examples
 
-### Reads
+- Using prisma to read from DB
+  - Run `npm run read` OR `npx ts-node examples/read.ts`
+- Using prisma to write to DB
+  - Run `npm run write` OR `npx ts-node examples/write.ts`
 
-Run `npm run read` OR `npx ts-node examples/read.ts`
-
-### Writes
-
-Run `npm run write` OR `npx ts-node examples/write.ts`
-
-## Notes
+## Additional Notes
 
 - Tutorial from Prisma I followed, great basic intro
   - https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases-typescript-postgres
