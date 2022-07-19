@@ -10,28 +10,60 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
-}
-
-model Profile {
-  id     String  @id @default(uuid())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId String  @unique
-}
-
 model User {
-  id      String   @id @default(uuid())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+  id         String     @id @default(uuid())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  firstName  String?
+  familyName String?
+  email      String     @unique
+  UserFund   UserFund[]
 }
+
+model Fund {
+  id                     String     @id @default(uuid())
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+  type                   String
+  name                   String
+  allowAdditionalCapital Boolean
+  UserFund               UserFund[]
+}
+
+model UserFund {
+  id                   String   @id @default(uuid())
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id])
+  fundId               String
+  fund                 Fund     @relation(fields: [fundId], references: [id])
+  balance              Int
+  lifetimeProfitOrLoss Int
+}
+
+// model Post {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   title     String   @db.VarChar(255)
+//   content   String?
+//   published Boolean  @default(false)
+//   author    User     @relation(fields: [authorId], references: [id])
+//   authorId  String
+// }
+
+// model Profile {
+//   id     String  @id @default(uuid())
+//   bio    String?
+//   user   User    @relation(fields: [userId], references: [id])
+//   userId String  @unique
+// }
+
+// model User {
+//   id      String   @id @default(uuid())
+//   email   String   @unique
+//   name    String?
+//   posts   Post[]
+//   profile Profile?
+// }

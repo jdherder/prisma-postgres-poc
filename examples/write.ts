@@ -3,20 +3,34 @@ import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-
-  // Example for pulling in the auto generated from schema `UserCreateInput` type.
-  const input: Prisma.UserCreateInput = {
-    email: 'josh@test.com',
-    name: 'Josh',
-    posts: {
-      create: { title: 'Hello World' },
-    },
-    profile: {
-      create: { bio: 'I like turtles' },
-    },
+  const fundInput: Prisma.FundCreateInput = {
+    name: 'Example',
+    type: 'generic',
+    allowAdditionalCapital: true,
   }
 
-  await prisma.user.create({ data: input })
+  const createdFund = await prisma.fund.create({ data: fundInput })
+  console.dir(createdFund, { depth: null })
+  
+  // Example for pulling in the auto generated from schema `UserCreateInput` type.
+  const userInput: Prisma.UserCreateInput = {
+    email: 'josh@example.com',
+    firstName: 'Josh',
+    familyName: 'Herder',
+  }
+
+  const createdUser = await prisma.user.create({ data: userInput })
+  console.dir(createdUser, { depth: null })
+
+  const userFundInput: Prisma.UserFundCreateInput = {
+    user: { connect: { id: createdUser.id } },
+    fund: { connect: { id: createdFund.id } },
+    balance: 0,
+    lifetimeProfitOrLoss: 0,
+  }
+
+  const createdUserFund = await prisma.userFund.create({ data: userFundInput })
+  console.dir(createdUserFund, { depth: null })
 }
 
 main()
