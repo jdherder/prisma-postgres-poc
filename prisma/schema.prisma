@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id         String     @id @default(uuid())
+  id         String     @id @default(uuid()) @db.Uuid
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   firstName  String?
@@ -21,7 +21,7 @@ model User {
 }
 
 model Fund {
-  id                     String     @id @default(uuid())
+  id                     String     @id @default(uuid()) @db.Uuid
   createdAt              DateTime   @default(now())
   updatedAt              DateTime   @updatedAt
   type                   String
@@ -31,12 +31,12 @@ model Fund {
 }
 
 model UserFund {
-  id                   String   @id @default(uuid())
+  id                   String   @id @default(uuid()) @db.Uuid
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
-  userId               String
+  userId               String   @db.Uuid
   user                 User     @relation(fields: [userId], references: [id])
-  fundId               String
+  fundId               String   @db.Uuid
   fund                 Fund     @relation(fields: [fundId], references: [id])
   balance              Int
   lifetimeProfitOrLoss Int
